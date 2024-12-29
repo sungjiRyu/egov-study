@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import egovframework.com.cmm.LoginVO;
-import egovframework.sjryu.utl.fcc.service.EgovStringUtil;
+import egovframework.let.utl.fcc.service.EgovStringUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;

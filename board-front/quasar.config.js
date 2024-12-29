@@ -18,7 +18,7 @@ module.exports = configure(function (/* ctx */) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli-vite/boot-files
-    boot: [],
+    boot: ["pinia"],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
     css: ["app.scss"],
@@ -71,6 +71,14 @@ module.exports = configure(function (/* ctx */) {
         },
       },
 
+      extendViteConf(viteConf) {
+        viteConf.resolve = viteConf.resolve || {};
+        viteConf.resolve.alias = {
+          ...viteConf.resolve.alias,
+          "@": "/src", // `@`를 `src` 폴더로 설정
+        };
+      },
+
       vitePlugins: [
         [
           "vite-plugin-checker",
@@ -86,6 +94,8 @@ module.exports = configure(function (/* ctx */) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
+      proxy: "http://localhost:8080",
+      changeOrigin: true,
       // https: true
       open: true, // opens browser window automatically
     },

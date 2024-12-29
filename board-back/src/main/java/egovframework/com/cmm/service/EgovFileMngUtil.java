@@ -27,7 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 //import java.util.HashMap;
 
 import egovframework.com.cmm.EgovWebUtil;
-import egovframework.sjryu.utl.fcc.service.EgovStringUtil;
+import egovframework.let.utl.fcc.service.EgovStringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**

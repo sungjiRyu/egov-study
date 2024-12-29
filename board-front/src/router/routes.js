@@ -1,25 +1,28 @@
+import MainLayout from "@/layouts/MainLayout.vue";
+
 const routes = [
   {
     path: "/",
-    component: () => import("layouts/MainLayout.vue"),
-    children: [{ path: "", component: () => import("pages/IndexPage.vue") }],
+    component: MainLayout,
+    children: [
+      {
+        path: "",
+        component: () => import("@/pages/MainPage.vue"),
+      },
+      {
+        path: "login",
+        component: () => import("@/pages/LoginPage.vue"),
+      },
+      {
+        path: "signUp",
+        component: () => import("@/pages/SignupPage.vue"),
+      },
+    ],
   },
 
-  {
-    path: "/login",
-    component: () => import("src/pages/LoginPage.vue"),
-  },
-
-  // Always leave this as last one,
-  // but you can also remove it
   {
     path: "/:catchAll(.*)*",
-    component: () => import("pages/ErrorNotFound.vue"),
-  },
-
-  {
-    path: "/signup",
-    component: () => import("src/pages/SignupPage.vue"),
+    component: () => import("@/pages/ErrorNotFound.vue"),
   },
 ];
 

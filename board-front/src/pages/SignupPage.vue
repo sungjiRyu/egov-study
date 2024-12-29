@@ -1,16 +1,11 @@
 <template>
   <div class="login-page">
     <div class="login-container">
-      <h1>sign up</h1>
+      <h1>회원가입</h1>
       <form class="login-form" @submit.prevent="onSubmit">
         <div class="input-group">
           <label for="email">ID</label>
-          <input
-            type="text"
-            id="email"
-            v-model="email"
-            placeholder="Enter your email"
-          />
+          <input type="text" id="email" v-model="email" placeholder="ID" />
         </div>
 
         <div class="input-group">
@@ -19,35 +14,26 @@
             type="password"
             id="password"
             v-model="password"
-            placeholder="Enter your password"
+            placeholder="password"
           />
         </div>
 
         <div class="input-group">
           <label for="name">Name</label>
-          <input
-            type="name"
-            id="name"
-            v-model="name"
-            placeholder="Enter your name"
-          />
+          <input type="name" id="name" v-model="name" placeholder="name" />
         </div>
 
         <button type="submit" class="submit-btn">submit</button>
         <div class="signup-link-container">
-          <router-link to="/login" class="sign-up-link">sign in</router-link>
+          <router-link to="/login" class="sign-up-link">로그인</router-link>
         </div>
       </form>
-      <div class="social-login">
-        <!-- <button class="social-btn kakao">Login with Kakao</button>
-        <button class="social-btn naver">Login with Naver</button> -->
-      </div>
     </div>
   </div>
 </template>
 
 <script>
-import "../css/signupPage.scss";
+import "@/css/signupPage.scss";
 
 export default {
   name: "SignupPage",

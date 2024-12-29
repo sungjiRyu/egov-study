@@ -32,7 +32,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import egovframework.com.cmm.service.EgovProperties;
-import egovframework.sjryu.utl.fcc.service.EgovFileUploadUtil;
+import egovframework.let.utl.fcc.service.EgovFileUploadUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
