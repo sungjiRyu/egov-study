@@ -44,7 +44,7 @@ module.exports = configure(function (/* ctx */) {
         node: "node20",
       },
 
-      vueRouterMode: "hash", // available values: 'hash', 'history'
+      vueRouterMode: "history", // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
@@ -53,7 +53,9 @@ module.exports = configure(function (/* ctx */) {
 
       // publicPath: '/',
       // analyze: true,
-      // env: {},
+      env: {
+        DOMAIN_URL: "http://localhost:8080",
+      },
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
@@ -94,7 +96,7 @@ module.exports = configure(function (/* ctx */) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
-      proxy: "http://localhost:8080",
+      // proxy: "http://localhost:8080",
       changeOrigin: true,
       // https: true
       open: true, // opens browser window automatically

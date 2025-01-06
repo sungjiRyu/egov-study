@@ -33,8 +33,6 @@
 </template>
 
 <script>
-import "@/css/signupPage.scss";
-
 export default {
   name: "SignupPage",
   data() {

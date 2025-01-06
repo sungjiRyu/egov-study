@@ -10,12 +10,20 @@ const routes = [
         component: () => import("@/pages/MainPage.vue"),
       },
       {
-        path: "login",
+        path: "/login",
         component: () => import("@/pages/LoginPage.vue"),
       },
       {
-        path: "signUp",
+        path: "/signUp",
         component: () => import("@/pages/SignupPage.vue"),
+      },
+      {
+        path: "/board",
+        component: () => import("@/pages/BoardPage.vue"),
+      },
+      {
+        path: "/mypage",
+        component: () => import("@/pages/UserMypage.vue"),
       },
     ],
   },

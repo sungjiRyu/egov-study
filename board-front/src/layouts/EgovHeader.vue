@@ -29,13 +29,13 @@
       </div>
 
       <div class="user_info">
-        <template v-if="userStore.isLogIn">
-          <span>{{ userStore.id }}님이 로그인하셨습니다.</span>
+        <template v-if="sessionUser">
+          <span>{{ sessionUser }}님이 로그인하셨습니다.</span>
           <q-btn @click="logOutHandler" label="로그아웃" />
         </template>
         <template v-else>
           <q-btn to="/login" label="로그인" />
-          <q-btn to="/signup" label="회원가입" />
+          <q-btn to="/mypage" label="회원가입" />
         </template>
       </div>
 
@@ -61,42 +61,84 @@
   </div>
 </template>
 
-<script>
+<style>
+.header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 140px;
+  /* width: 100%; */
+  border-bottom: 1px solid #27262642;
+}
+
+.main-img {
+  width: 120%;
+}
+
+.menu-list {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.gnb {
+  color: #666;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.25px;
+}
+
+.inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo img {
+  max-width: 100%;
+}
+
+.gnb {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.user_info {
+  display: flex;
+  align-items: center;
+}
+
+.q-drawer {
+  width: 250px;
+}
+
+.q-btn {
+  margin: 0 5px;
+}
+</style>
+
+<script setup>
 import { ref } from "vue";
-import "@/css/header.scss";
 import { useUserStore } from "@/stores/user";
-import { QBtn, QList, QItem, QItemSection, QDrawer } from "quasar";
 import { useRouter } from "vue-router";
 
-export default {
-  name: "EgovHeader",
-  components: {
-    QBtn,
-    QList,
-    QItem,
-    QItemSection,
-    QDrawer,
-  },
-  setup() {
-    const userStore = useUserStore();
-    const menuDrawer = ref(false);
-    const router = useRouter();
+const userStore = useUserStore();
+const menuDrawer = ref(false);
+const router = useRouter();
+const sessionUser = localStorage.getItem("loginUser");
 
-    const logOutHandler = () => {
-      userStore.logOut();
-      router.push("/");
-    };
+const logOutHandler = async () => {
+  await userStore.signOut();
+  if (!localStorage.getItem("loginUser")) {
+    router.push("/");
+  } else {
+    alert("로그아웃 실패");
+  }
+};
 
-    const toggleMenu = () => {
-      menuDrawer.value = !menuDrawer.value;
-    };
-
-    return {
-      userStore,
-      menuDrawer,
-      logOutHandler,
-      toggleMenu,
-    };
-  },
+const toggleMenu = () => {
+  menuDrawer.value = !menuDrawer.value;
 };
 </script>

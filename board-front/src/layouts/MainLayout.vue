@@ -4,19 +4,10 @@
     <q-page-container>
       <router-view />
     </q-page-container>
+    <EgovFooter />
   </q-layout>
-  <EgovFooter />
 </template>
-
-<script>
+<script setup>
 import EgovHeader from "@/layouts/EgovHeader.vue";
 import EgovFooter from "@/layouts/EgovFooter.vue";
-
-export default {
-  name: "MainLayout",
-  components: {
-    EgovHeader,
-    EgovFooter,
-  },
-};
 </script>

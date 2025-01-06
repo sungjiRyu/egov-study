@@ -34,31 +34,50 @@
   </div>
 </template>
 
-<script>
-import { defineComponent } from "vue";
-import { QImg } from "quasar";
-import "@/css/footer.scss";
+<style>
+.footer {
+  /* height: 100px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  /* height: 100%; */
+  width: 100%;
+  border-top: 1px solid #27262642;
+}
 
-import logoFooterImg from "@/assets/images/logo_footer_w.png";
-import logoFooterImgMobile from "@/assets/images/logo_footer_m.png";
-import bannerImg_01 from "@/assets/images/banner_w_01.png";
-import bannerImgMobile_01 from "@/assets/images/banner_m_01.png";
-import bannerImg_02 from "@/assets/images/banner_w_02.png";
-import bannerImgMobile_02 from "@/assets/images/banner_m_02.png";
+.footer > .inner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1400px;
+  padding: 0 20px;
+  gap: 20px;
+}
 
-import "@/css/footer.scss";
+.footer > .inner > h1 {
+  float: none;
+  padding-top: 28px;
+}
 
-export default defineComponent({
-  name: "EgovFooter",
-  setup() {
-    return {
-      logoFooterImg,
-      logoFooterImgMobile,
-      bannerImg_01,
-      bannerImgMobile_01,
-      bannerImg_02,
-      bannerImgMobile_02,
-    };
-  },
-});
-</script>
+.footer > .inner > .info {
+  float: left;
+  padding-top: 44px;
+  color: #888;
+  font-size: 16px;
+  line-height: 26px;
+}
+
+.footer > .inner > .right_col {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
+.a > .w {
+  width: 10px;
+}
+</style>
+
+<script setup></script>

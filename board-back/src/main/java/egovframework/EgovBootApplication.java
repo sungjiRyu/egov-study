@@ -16,11 +16,11 @@ import lombok.extern.slf4j.Slf4j;
 public class EgovBootApplication {
 	public static void main(String[] args) {
 		log.debug("##### EgovBootApplication Start #####");
+
 		SpringApplication springApplication = new SpringApplication(EgovBootApplication.class);
 		springApplication.setBannerMode(Banner.Mode.OFF);
 		//springApplication.setLogStartupInfo(false);
 		springApplication.run(args);
-
 
 		log.debug("##### EgovBootApplication End #####");
 	}

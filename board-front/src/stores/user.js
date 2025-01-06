@@ -1,44 +1,45 @@
 import { defineStore } from "pinia";
-import axios from "axios";
-import URL from "@/constants/url";
+import { signInRequest, signOutRequeset, signUpRequest } from "@/api/apis";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
     id: null,
     isLogIn: false,
-    errorMessage: "",
+    jToken: null,
   }),
 
-  getters: {},
-
   actions: {
-    async signInRequest(requestBody) {
+    async signIn(requestBody) {
       try {
-        const response = await axios.post(
-          "http://localhost:8080/auth/login-jwt",
-          requestBody
-        );
-
-        if (response.data.resultCode === "200") {
-          const userData = response.data.resultVO;
-          this.id = userData.id;
+        const response = await signInRequest(requestBody);
+        const code = response.data.resultCode;
+        if (response && code === "200") {
+          this.jToken = response.data.jToken;
+          this.id = response.data.resultVO.id;
           this.isLogIn = true;
-          console.log("200" + this.isLogIn);
-          this.errorMessage = "";
-        } else {
-          console.log("err" + this.isLogIn);
-          this.isLogIn = false;
-          this.errorMessage = response.data.resultMessage;
+          // save token in sessionStorage
+          localStorage.setItem("jToken", this.jToken);
+          localStorage.setItem("loginUser", this.id);
         }
       } catch (error) {
-        this.isLogIn = false;
-        alert("로그인 요청에 실패했습니다.");
+        console.log("err : " + error);
       }
     },
 
-    logOut() {
-      this.id = null;
-      this.isLogIn = false;
+    async signOut() {
+      try {
+        const response = await signOutRequeset();
+        const code = response.data.resultCode;
+        if (response && code === 200) {
+          this.isLogIn = false;
+          this.jToken = null;
+          // remove token in localStorage
+          localStorage.removeItem("jToken");
+          localStorage.removeItem("loginUser");
+        }
+      } catch (error) {
+        console.log("err : " + error);
+      }
     },
   },
 });

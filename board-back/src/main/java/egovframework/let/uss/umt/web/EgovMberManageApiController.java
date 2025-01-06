@@ -486,7 +486,7 @@ public class EgovMberManageApiController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "등록 성공"),
 			@ApiResponse(responseCode = "900", description = "입력값 무결성 오류") })
 	@PostMapping("/etc/member_insert")
-	public ResultVO sbscrbMber(MberManageVO mberManageVO, BindingResult bindingResult) throws Exception {
+	public ResultVO sbscrbMber(@RequestBody MberManageVO mberManageVO, BindingResult bindingResult) throws Exception {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		ResultVO resultVO = new ResultVO();
 		beanValidator.validate(mberManageVO, bindingResult);
