@@ -3,9 +3,8 @@ import { signInRequest, signOutRequeset, signUpRequest } from "@/api/apis";
 
 export const useUserStore = defineStore("user", {
   state: () => ({
-    id: null,
-    isLogIn: false,
-    jToken: null,
+    loginUserInfo: JSON.parse(localStorage.getItem('loginUserInfo')) || null,
+    jToken: localStorage.getItem('jToken') || null,    
   }),
 
   actions: {
@@ -13,16 +12,16 @@ export const useUserStore = defineStore("user", {
       try {
         const response = await signInRequest(requestBody);
         const code = response.data.resultCode;
-        if (response && code === "200") {
-          this.jToken = response.data.jToken;
-          this.id = response.data.resultVO.id;
-          this.isLogIn = true;
-          // save token in sessionStorage
-          localStorage.setItem("jToken", this.jToken);
-          localStorage.setItem("loginUser", this.id);
+        if(code === 200) {                    
+          this.loginUserInfo = response.data.resultVO          
+          this.jToken = response.data.jToken          
+          // save token && userId in sessionStorage
+          localStorage.setItem('loginUserInfo', JSON.stringify(response.data.resultVO));
+          localStorage.setItem('jToken', response.data.jToken);
         }
-      } catch (error) {
-        console.log("err : " + error);
+        return code;
+      } catch(error) {
+        console.log('server error : '+ error);
       }
     },
 
@@ -30,16 +29,18 @@ export const useUserStore = defineStore("user", {
       try {
         const response = await signOutRequeset();
         const code = response.data.resultCode;
-        if (response && code === 200) {
-          this.isLogIn = false;
-          this.jToken = null;
-          // remove token in localStorage
-          localStorage.removeItem("jToken");
-          localStorage.removeItem("loginUser");
+        if(code === 200) {
+          this.loginUserInfo = null
+          this.jToken = null
+          // remove token && userId in localStorage
+          localStorage.removeItem('loginUserInfo');
+          localStorage.removeItem('jToken');
         }
-      } catch (error) {
-        console.log("err : " + error);
+        return code;
+      } catch(error) {
+        console.log('server error : '+ error);
       }
     },
-  },
-});
+  }
+})
+

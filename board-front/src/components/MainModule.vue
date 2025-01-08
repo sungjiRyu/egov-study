@@ -503,9 +503,4 @@ const noticeBoard = ref([]);
 const gallaryBoard = ref([]);
 const tab = ref("공지사항");
 const router = useRouter();
-
-// api.onMounted(() => {
-//   initPage();
-//   retrieveList();
-// });
 </script>

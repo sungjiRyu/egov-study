@@ -7,13 +7,12 @@ export const signInRequest = async (requestBody) => {
   const result = await api
     .post(PATH.LOGIN, requestBody)
     .then((response) => {
-      return response;
+      return response
     })
-    .catch((error) => {
-      if (!error.response) return error;
-      return error.response;
+    .catch((error) => {      
+      return error
     });
-  return result;
+  return result
 };
 
 // sign out
@@ -21,11 +20,10 @@ export const signOutRequeset = async () => {
   const result = await api
     .get(PATH.LOGOUT)
     .then((response) => {
-      return response;
+      return response
     })
     .catch((error) => {
-      if (!error.response) return error;
-      return error.response;
+      return error
     });
   return result;
 };
@@ -35,39 +33,49 @@ export const signUpRequest = async (requestBody) => {
   const result = await api
     .post(PATH.SIGNUP, requestBody)
     .then((response) => {
-      return response;
+      return response
     })
     .catch((error) => {
-      if (!error.response) return null;
-      return error.response;
+      return error
     });
   return result;
 };
 
-// board list
-export const boardListRequest = async (params) => {
+// check Duplicate Id
+export const checkDuplicateIdRequest = async (param) => {
   const result = await api
-    .get(PATH.BOARD, { params })
+    .get(PATH.CHECK_DUPLICTE_ID(param))
     .then((response) => {
-      return response;
+      return response
+    })
+    .catch((error) =>{
+      return error
+    })
+  return result
+}
+
+// board list
+export const boardListRequest = async (param) => {
+  const result = await api
+    .get(PATH.BOARD(param))
+    .then((response) => {
+      return response
     })
     .catch((error) => {
-      if (!error.response) return null;
-      return error.response;
-    });
+      return error
+    })
   return result;
-};
+}
 
 // notice, gallery list
 export const mainPageRequest = async () => {
   const result = await api
     .get(URL.MAIN_PAGE)
     .then((response) => {
-      return response;
+      return response
     })
     .catch((error) => {
-      if (!error.response) return null;
-      return error.response;
-    });
-  return result;
+      return error
+    })
+  return result
 };

@@ -10,6 +10,14 @@
 
 const { configure } = require("quasar/wrappers");
 
+// dotenv path설정(환경변수 로드 라이브러리)
+const env = require("dotenv").config({
+  path:`.env.${process.env.NODE_ENV}`
+}).parsed;
+  // console.log(env)
+  console.log(process.env)
+  console.log(process.env.NODE_ENV)
+
 module.exports = configure(function (/* ctx */) {
   return {
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
@@ -43,7 +51,7 @@ module.exports = configure(function (/* ctx */) {
         browser: ["es2019", "edge88", "firefox78", "chrome87", "safari13.1"],
         node: "node20",
       },
-
+      env: env,
       vueRouterMode: "history", // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
@@ -53,9 +61,8 @@ module.exports = configure(function (/* ctx */) {
 
       // publicPath: '/',
       // analyze: true,
-      env: {
-        DOMAIN_URL: "http://localhost:8080",
-      },
+      // env: {
+      // },
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
@@ -117,7 +124,7 @@ module.exports = configure(function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: [],
+      plugins: ['Notify'],
     },
 
     // animations: 'all', // --- includes all animations

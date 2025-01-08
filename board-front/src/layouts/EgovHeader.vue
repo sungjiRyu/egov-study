@@ -29,9 +29,9 @@
       </div>
 
       <div class="user_info">
-        <template v-if="sessionUser">
-          <span>{{ sessionUser }}님이 로그인하셨습니다.</span>
-          <q-btn @click="logOutHandler" label="로그아웃" />
+        <template v-if="loginUserInfo">
+          <span>{{ loginUserInfo.id }}님이 로그인하셨습니다.</span>
+          <q-btn @click="onSignOutButtonClickHandler" label="로그아웃" />
         </template>
         <template v-else>
           <q-btn to="/login" label="로그인" />
@@ -67,7 +67,6 @@
   justify-content: center;
   align-items: center;
   height: 140px;
-  /* width: 100%; */
   border-bottom: 1px solid #27262642;
 }
 
@@ -120,23 +119,28 @@
 </style>
 
 <script setup>
-import { ref } from "vue";
-import { useUserStore } from "@/stores/user";
-import { useRouter } from "vue-router";
+import { computed, ref} from 'vue'
+import { Notify } from 'quasar'
+import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router'
 
-const userStore = useUserStore();
-const menuDrawer = ref(false);
-const router = useRouter();
-const sessionUser = localStorage.getItem("loginUser");
+const userStore = useUserStore()
+const menuDrawer = ref(false)
+const router = useRouter()
 
-const logOutHandler = async () => {
-  await userStore.signOut();
-  if (!localStorage.getItem("loginUser")) {
-    router.push("/");
-  } else {
-    alert("로그아웃 실패");
+const loginUserInfo = computed(() => userStore.loginUserInfo)
+
+// event handler: 로그아웃 버튼 클릭 이벤트 처리
+const onSignOutButtonClickHandler = () => {
+  userStore.signOut().then((response) => {
+    if (!response) {
+      Notify.create({ message: '오류가 발생하였습니다.', position: 'top' })
+      return
+    }       
+    Notify.create({ message: '로그아웃 했습니다.', position: 'top' })
+    router.push('/')  
+    })
   }
-};
 
 const toggleMenu = () => {
   menuDrawer.value = !menuDrawer.value;

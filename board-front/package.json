@@ -8,11 +8,11 @@
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
     "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
-    "local": "cross-env NODE_ENV=local quasar dev",
+    "dev": "cross-env NODE_ENV=local quasar dev",
     "build": "quasar build"
   },
   "dependencies": {
-    "@quasar/extras": "^1.16.4",
+    "@quasar/extras": "^1.16.15",
     "axios": "^1.7.7",
     "pinia": "^2.3.0",
     "quasar": "^2.16.0",
@@ -23,6 +23,7 @@
     "@quasar/app-vite": "^1.9.0",
     "autoprefixer": "^10.4.2",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.4.7",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-vue": "^9.0.0",

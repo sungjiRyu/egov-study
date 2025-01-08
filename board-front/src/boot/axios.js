@@ -7,7 +7,7 @@ axios.defaults.headers.common["Authorization"] = localStorage.getItem("jToken");
 
 // axios instance setting
 const api = axios.create({
-  baseURL: "http://localhost:8080",
+  baseURL: process.env.DOMAIN_URL,
   withCredentials: true,
 });
 

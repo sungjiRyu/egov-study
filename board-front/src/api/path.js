@@ -9,6 +9,9 @@ const PATH = {
 
   // SIGNUP
   SIGNUP: "/etc/member_insert",
+
+  // DUPLICATE CHECK
+  CHECK_DUPLICTE_ID: (id) => `/etc/member_checkid/${id}`
 };
 
 export default PATH;

@@ -1,20 +1,16 @@
 <template>
   <div class="location">
-    <router-link to="/">홈</router-link>
-    <li>></li>
-    <li>로그인</li>
   </div>
   <div class="login-page">
     <div class="login-container">
-      <div class="login-header">
-        <h1>로그인</h1>
+      <div class="login-header">        
         <p>
           전자정부표준프레임워크 경량환경 홈페이지 로그인 페이지입니다.<br />
           로그인을 하시면 모든 서비스를 제한없이 이용하실 수 있습니다.
         </p>
       </div>
       <q-card class="login-card">
-        <q-form class="login-form" @submit.prevent="onSubmit">
+        <q-form class="login-form" @submit.prevent="onSignInButtonClickHandler">
           <div class="form-header">
             <div class="input-box">
               <input
@@ -39,13 +35,7 @@
               class="login-button"
             />
           </div>
-        </q-form>
-        <!-- <q-checkbox
-          v-model="remember"
-          label="ID 저장"
-          color="primary"
-          class="saveId-checkbox"
-        /> -->
+        </q-form>       
       </q-card>
       <div class="login-footer">
         <div>
@@ -72,6 +62,9 @@
 </template>
 
 <style>
+.location{
+  margin-top: 20px;
+}
 .login-page {
   display: flex;
   flex-direction: column;
@@ -175,9 +168,10 @@
 </style>
 
 <script setup>
-import { useUserStore } from "@/stores/user";
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { Notify } from 'quasar';
+import { useUserStore } from '@/stores/user';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const userStore = useUserStore();
 const router = useRouter();
@@ -185,23 +179,27 @@ const router = useRouter();
 const username = ref("");
 const password = ref("");
 
-// 로그인 버튼 클릭시
-const onSubmit = async () => {
-  // requestBody 생성
+// event handler: 로그인 버튼 클릭 이벤트 처리
+const onSignInButtonClickHandler = () => {
   const requestBody = {
     userSe: "USR",
     id: username.value,
     password: password.value,
-  };
-
-  // 로그인 request
-  await userStore.signIn(requestBody);
-
-  if (userStore.isLogIn) {
-    alert("로그인 성공");
-    router.push("/");
-  } else {
-    alert("로그인 실패");
   }
-};
+  userStore.signIn(requestBody).then((response) => {
+    if (!response) {
+      Notify.create({ message: '오류가 발생하였습니다.', position: 'top' })
+      return
+    }    
+    if (response == 300) {
+      Notify.create({ message: '로그인이 실패했습니다.', position: 'top' })
+      return
+    }
+     
+    if (response !== 200) return 
+
+    Notify.create({ message: '로그인이 성공했습니다.', position: 'top' })
+    router.push('/')  
+    })
+  }
 </script>
