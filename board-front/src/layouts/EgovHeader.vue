@@ -29,7 +29,7 @@
       </div>
 
       <div class="user_info">
-        <template v-if="loginUserInfo">
+        <template v-if="userStore.isLogin">
           <span>{{ loginUserInfo.id }}님이 로그인하셨습니다.</span>
           <q-btn @click="onSignOutButtonClickHandler" label="로그아웃" />
         </template>
@@ -38,7 +38,6 @@
           <q-btn to="/mypage" label="회원가입" />
         </template>
       </div>
-
       <q-btn class="btnAllMenu" icon="menu" @click="toggleMenu" />
     </div>
 
@@ -134,11 +133,12 @@ const loginUserInfo = computed(() => userStore.loginUserInfo)
 const onSignOutButtonClickHandler = () => {
   userStore.signOut().then((response) => {
     if (!response) {
-      Notify.create({ message: '오류가 발생하였습니다.', position: 'top' })
+      Notify.create({ message: '네트워크 오류', position: 'top' })
       return
-    }       
-    Notify.create({ message: '로그아웃 했습니다.', position: 'top' })
-    router.push('/')  
+    }
+
+    Notify.create({ message: '로그아웃 성공', position: 'top' })
+    router.push('/')
     })
   }
 

@@ -51,13 +51,13 @@ api.interceptors.response.use(
         Notify.create(error.response.data);
         break;
       case "403":
-        Notify.create("인가된 사용자가 아닙니다.");
+        Notify.create("인가된 사용자 가 아닙니다.");
         break;
       case "408":
         Notify.create("오류가 발생하였습니다.");
         break;
       case "500":
-        Notify.create("서버에서 오류가 발생하였습니다.");
+        Notify.create("서버에서 오류가발생하였습니다.");
         break;
       case "700":
         Notify.create("삭제 중 내부 오류가 발생했습니다.");
@@ -75,4 +75,4 @@ api.interceptors.response.use(
   }
 );
 
-export default api;
+export { api };

@@ -14,4 +14,4 @@ const PATH = {
   CHECK_DUPLICTE_ID: (id) => `/etc/member_checkid/${id}`
 };
 
-export default PATH;
+export { PATH }

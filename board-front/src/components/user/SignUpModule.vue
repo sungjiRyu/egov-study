@@ -46,7 +46,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .signUp-container {
   display: flex;
   justify-content: center;
@@ -141,58 +141,54 @@
   color: red;
   font-size: 20px;
 }
+
+.duplicated-error {
+  color: red;
+  font-size: 14px;
+  margin-top: 5px;
+}
 </style>
 
 <script setup>
 import { ref } from 'vue'
 import { Notify } from 'quasar'
-import { signUpRequest, checkDuplicateIdRequest } from '@/api/apis'
 import { useRouter } from 'vue-router'
+import { api } from '@/boot/axios'
+import { PATH } from '@/api/path'
 
 const router = useRouter()
 const userId = ref('')
 const userPw = ref('')
 const userNm = ref('')
+let isDuplicated = false
 
 // event handler: 회원가입 버튼 클릭 이벤트 처리(회원가입)
-const onSignUpButtonClickHandler = () => {
+const onSignUpButtonClickHandler = async () => {
+  // id duplicate check
+    const response = await api.get(PATH.CHECK_DUPLICTE_ID(userId.value))
 
-  checkDuplicateIdRequest(userId.value).then((response) => {
-    const code = response.data.resultCode
-    if (!response) {
-      Notify.create({ message: '오류가 발생하였습니다.', position: 'top' })
-      return
-    }
-    if (response = 403) {
-      Notify.create({ message: '인가된 사용자가 아닙니다.', position: 'top' })
-      return
-    }
-    if (response !== 200) return    
-  })
+    if (response.data.resultCode === 200 && response.data.result.usedCnt > 0) {
+        Notify.create({ type: 'negative', message: '사용할 수 없는 아이디 입니다.', position: 'top' })
+        return
+      }
 
-  const requestBody = {
-    tmplatId: "TMPLAT_MYPAGE_DEFAULT",
-    groupId: "GROUP_00000000000001",
-    mberSttus: "P",
-    checkIdResult: "사용 가능한 아이디입니다",
-    mberId: userId.value,
-    password: userPw.value,
-    mberNm: userNm.value,
-  };
+    const requestBody = {
+      tmplatId: "TMPLAT_MYPAGE_DEFAULT",
+      groupId: "GROUP_00000000000001",
+      mberSttus: "P",
+      checkIdResult: "사용 가능한 아이디입니다",
+      mberId: userId.value,
+      password: userPw.value,
+      mberNm: userNm.value,
+    };
 
-  signUpRequest(requestBody).then((response) => {
-    const code = response.data.resultCode
-    if (!response) {
-      Notify.create({ message: '오류가 발생하였습니다.', position: 'top' })
-      return
-    }
-    if (response = 800) {
-      Notify.create({ message: '저장을 실패했습니다.', position: 'top' })
-      return
-    }
-    if (response !== 200) return
-    Notify.create({ message: '회원가입에 성공했습니다.', position: 'top' })
-    router.push('/login')
-  })    
+    // signup request
+    await api.post(PATH.SIGNUP, requestBody)
+    .then((response) => {
+      if (response.data.resultCode === 200) {
+        Notify.create({ type: 'positive', message: '회원가입에 성공했습니다.', position: 'top' })
+        router.push('/login')
+      }
+    })
 };
 </script>

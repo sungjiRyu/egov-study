@@ -1,95 +1,74 @@
 <template>
+<div class="board-list-page">
   <div class="board-container">
-    <h1 class="board-title">게시글 목록</h1>
-    <table class="board-table">
-      <!-- 테이블 헤더 -->
-      <thead>
-        <tr class="table-header">
-          <th>번호</th>
-          <th>제목</th>
-          <th>작성자</th>
-          <th>작성일</th>
-          <th>조회수</th>
-        </tr>
-      </thead>
-      <!-- 테이블 바디 -->
-      <tbody>
-        <tr v-for="(item, index) in boardList" :key="index" class="board-item">
-          <td>{{ item.nttId }}</td>
-          <td>{{ item.nttSj }}</td>
-          <td>{{ item.frstRegisterNm }}</td>
-          <td>{{ item.frstRegisterPnttm }}</td>
-          <td>{{ item.inqireCo }}</td>
-        </tr>
-      </tbody>
-    </table>
+      <table class="board-table">
+        <thead>
+          <tr class="table-header">
+            <th style="width: 5%;">번호</th>
+            <th style="width: 50%;">제목</th>
+            <th style="width: 15%;">작성자</th>
+            <th style="width: 20%;">작성일</th>
+            <th style="width: 10%;">조회수</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(item, index) in boardStore.boardList" :key="index" class='board-item'>
+            <td>{{ item.nttId }}</td>
+            <td class='board-item-title'>{{ item.nttSj }}</td>
+            <td>{{ item.frstRegisterNm }}</td>
+            <td>{{ item.frstRegisterPnttm }}</td>
+            <td>{{ item.inqireCo }}</td>
+          </tr>
+          <tr v-if="boardStore.boardList.length === 0">
+            <td colspan="5" class="no-data">검색 결과가 없습니다</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="q-pa-lg flex flex-center">
+        <q-pagination
+          v-model='currentPage'
+          :max= 'totalPage'
+          :max-pages='maxPage'
+          direction-links
+          flat
+          color='grey'
+          active-color='primary'
+        />
+    </div>
+    </div>
   </div>
 </template>
 
-<script setup>
-import { ref, onMounted } from "vue";
-import { boardListRequest } from "@/api/apis";
-
-// 게시글 목록 요청 api
-const boardList = ref(null);
-
-const getBoardList = async () => {
-  try {
-    const params = {
-      bbsId: "BBSMSTR_BBBBBBBBBBBB",
-      pageIndex: 1,
-      searchCnd: 0,
-      searchWrd: "",
-    };
-    const response = await boardListRequest(params);
-    if (response && response.data.resultCode === 200) {
-      boardList.value = response.data.result.resultList;
-    } else {
-      console.error("게시글 목록 불러오기 실패", response.resultMessage);
-    }
-  } catch (error) {
-    console.error("err:", error);
-  }
-};
-
-onMounted(() => {
-  getBoardList();
-});
-</script>
-
 <style scoped>
 .board-container {
-  width: 80%;
-  margin: 0 auto;
-  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.board-title {
-  text-align: center;
-  font-size: 32px;
-  font-weight: bold;
-  margin-bottom: 30px;
-  color: #333;
-}
-
-.board-table {
-  width: 100%;
+.board-table {  
   border-collapse: collapse;
   margin-top: 20px;
 }
 
-.table-header {
-  text-align: left;
+.board-table th {
+  text-align: center;
   font-size: 16px;
 }
 
-.board-table th,
-.board-table td {
+.board-item-title {
   padding: 12px 15px;
   text-align: left;
 }
 
+.board-table td:not(.board-item-title) {
+  padding: 12px 15px;
+  text-align: center;
+}
+
 .board-item {
+  text-align: left;
   background-color: #f9f9f9;
   transition: background-color 0.3s ease;
 }
@@ -117,3 +96,36 @@ onMounted(() => {
   border: none;
 }
 </style>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useBoardStore } from '@/stores/board'
+
+const boardStore = useBoardStore();
+
+// pagination params
+const totalPage = ref(boardStore.totalPage)   // 총 페이지 수
+const currentPage = ref(boardStore.pageIndex) // 현재 페이지
+const maxPage = 10;                           // 최대(표시할) 페이지 수
+
+// get BoardList
+const boardList = async () => {
+  const params = {
+    bbsId: "BBSMSTR_BBBBBBBBBBBB",
+    pageIndex: currentPage.value, // 현재 페이지로 설정
+    searchCnd: 0,
+    searchWrd: "",
+  }
+
+  await boardStore.getBoardList(params);
+
+  totalPage.value = boardStore.totalPage;
+  currentPage.value = boardStore.pageIndex;
+}
+
+onMounted(() => {
+  boardList()
+})
+</script>
+
+

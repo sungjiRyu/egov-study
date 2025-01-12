@@ -1,32 +1,32 @@
 import URL from "@/constants/url";
-import api from "@/boot/axios";
-import PATH from "@/api/path";
+import { api } from "@/boot/axios";
+import { PATH } from "@/api/path";
 
 // sign in
-export const signInRequest = async (requestBody) => {
-  const result = await api
-    .post(PATH.LOGIN, requestBody)
-    .then((response) => {
-      return response
-    })
-    .catch((error) => {      
-      return error
-    });
-  return result
-};
+// export const signInRequest = async (requestBody) => {
+//   const result = await api
+//     .post(PATH.LOGIN, requestBody)
+//     .then((response) => {
+//       return response
+//     })
+//     .catch((error) => {
+//       return error
+//     });
+//   return result
+// };
 
 // sign out
-export const signOutRequeset = async () => {
-  const result = await api
-    .get(PATH.LOGOUT)
-    .then((response) => {
-      return response
-    })
-    .catch((error) => {
-      return error
-    });
-  return result;
-};
+// export const signOutRequeset = async () => {
+//   const result = await api
+//     .get(PATH.LOGOUT)
+//     .then((response) => {
+//       return response
+//     })
+//     .catch((error) => {
+//       return error
+//     });
+//   return result;
+// };
 
 // sign up
 export const signUpRequest = async (requestBody) => {
@@ -42,9 +42,9 @@ export const signUpRequest = async (requestBody) => {
 };
 
 // check Duplicate Id
-export const checkDuplicateIdRequest = async (param) => {
+export const checkDuplicateIdRequest = async (params) => {
   const result = await api
-    .get(PATH.CHECK_DUPLICTE_ID(param))
+    .get(PATH.CHECK_DUPLICTE_ID(params))
     .then((response) => {
       return response
     })
@@ -55,9 +55,9 @@ export const checkDuplicateIdRequest = async (param) => {
 }
 
 // board list
-export const boardListRequest = async (param) => {
+export const boardListRequest = async (params) => {
   const result = await api
-    .get(PATH.BOARD(param))
+    .get(PATH.BOARD, { params })
     .then((response) => {
       return response
     })

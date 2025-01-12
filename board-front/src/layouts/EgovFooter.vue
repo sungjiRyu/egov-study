@@ -36,7 +36,7 @@
 
 <style>
 .footer {
-  /* height: 100px; */
+  height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -49,10 +49,12 @@
 .footer > .inner {
   display: flex;
   justify-content: center;
+  margin-top:30px;
   align-items: center;
   width: 1400px;
   padding: 0 20px;
   gap: 20px;
+  height: 100%;
 }
 
 .footer > .inner > h1 {

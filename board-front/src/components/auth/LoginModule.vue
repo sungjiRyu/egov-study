@@ -3,7 +3,7 @@
   </div>
   <div class="login-page">
     <div class="login-container">
-      <div class="login-header">        
+      <div class="login-header">
         <p>
           전자정부표준프레임워크 경량환경 홈페이지 로그인 페이지입니다.<br />
           로그인을 하시면 모든 서비스를 제한없이 이용하실 수 있습니다.
@@ -35,7 +35,7 @@
               class="login-button"
             />
           </div>
-        </q-form>       
+        </q-form>
       </q-card>
       <div class="login-footer">
         <div>
@@ -61,7 +61,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .location{
   margin-top: 20px;
 }
@@ -179,7 +179,7 @@ const router = useRouter();
 const username = ref("");
 const password = ref("");
 
-// event handler: 로그인 버튼 클릭 이벤트 처리
+// event handler: 로그인 버튼 클릭 이벤트
 const onSignInButtonClickHandler = () => {
   const requestBody = {
     userSe: "USR",
@@ -187,19 +187,12 @@ const onSignInButtonClickHandler = () => {
     password: password.value,
   }
   userStore.signIn(requestBody).then((response) => {
-    if (!response) {
-      Notify.create({ message: '오류가 발생하였습니다.', position: 'top' })
-      return
-    }    
-    if (response == 300) {
-      Notify.create({ message: '로그인이 실패했습니다.', position: 'top' })
+    if (response === 300) {
+      Notify.create({ type: 'negative', message: '로그인 실패', position: 'top' })
       return
     }
-     
-    if (response !== 200) return 
-
-    Notify.create({ message: '로그인이 성공했습니다.', position: 'top' })
-    router.push('/')  
+    Notify.create({ type: 'positive', message: '로그인 성공', position: 'top' })
+    router.push('/')
     })
   }
 </script>
