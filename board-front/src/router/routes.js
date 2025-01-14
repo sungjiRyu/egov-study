@@ -18,8 +18,14 @@ const routes = [
         component: () => import("@/pages/SignupPage.vue"),
       },
       {
-        path: "/board",
-        component: () => import("@/pages/BoardPage.vue"),
+        path: "/board/:boardId",
+        component: () => import("@/pages/BoardListPage.vue"),
+        props: true,
+      },
+      {
+        path: "/board/:boardId/:nttId",
+        component: () => import("@/pages/BoardDetailPage.vue"),
+        props: true,
       },
       {
         path: "/mypage",

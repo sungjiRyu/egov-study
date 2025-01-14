@@ -34,14 +34,13 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .footer {
   height: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
   background: #fff;
-  /* height: 100%; */
   width: 100%;
   border-top: 1px solid #27262642;
 }

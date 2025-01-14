@@ -94,3 +94,16 @@ textarea {
 button {
   cursor: pointer;
 }
+
+/* 링크 기본스타일 사용 */
+.link {
+  text-decoration: none;
+  color: #222;
+}
+
+textarea {
+  all: unset;
+  resize: none;
+  overflow: hidden;
+  resize: none;
+}

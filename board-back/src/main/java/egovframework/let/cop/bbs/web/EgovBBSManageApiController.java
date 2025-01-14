@@ -183,7 +183,7 @@ public class EgovBBSManageApiController {
 		boardVO.setBbsId((String) commandMap.get("bbsId"));
 		boardVO.setSearchCnd((String) commandMap.get("searchCnd"));
 		boardVO.setSearchWrd((String) commandMap.get("searchWrd"));
-
+		boardVO.setPageIndex(Integer.valueOf((String) commandMap.get("pageIndex")));					
 		BoardMasterVO vo = new BoardMasterVO();
 		vo.setBbsId(boardVO.getBbsId());
 		vo.setUniqId(user.getUniqId());
@@ -193,7 +193,7 @@ public class EgovBBSManageApiController {
 		PaginationInfo paginationInfo = new PaginationInfo();
 		paginationInfo.setCurrentPageNo(boardVO.getPageIndex());
 		paginationInfo.setRecordCountPerPage(egovPropertyService.getInt("Globals.pageUnit"));
-		paginationInfo.setPageSize(egovPropertyService.getInt("Globals.pageSize"));
+		paginationInfo.setPageSize(egovPropertyService.getInt("Globals.pageSize"));		
 
 		boardVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		boardVO.setLastIndex(paginationInfo.getLastRecordIndex());

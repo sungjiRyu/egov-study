@@ -9,7 +9,7 @@
 import SignUpModule from "@/components/user/SignUpModule.vue";
 </script>
 
-<style>
+<style scoped>
 .mypage-title {
   display: flex;
   flex-direction: column;

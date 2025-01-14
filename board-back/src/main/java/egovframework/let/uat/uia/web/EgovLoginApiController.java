@@ -129,12 +129,12 @@ public class EgovLoginApiController {
 
 			resultMap.put("resultVO", loginResultVO);
 			resultMap.put("jToken", jwtToken);
-			resultMap.put("resultCode", "200");
+			resultMap.put("resultCode", 200);
 			resultMap.put("resultMessage", "성공 !!!");
 
 		} else {
 			resultMap.put("resultVO", loginResultVO);
-			resultMap.put("resultCode", "300");
+			resultMap.put("resultCode", 300);
 			resultMap.put("resultMessage", egovMessageSource.getMessage("fail.common.login"));
 		}
 

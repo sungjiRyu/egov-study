@@ -19,7 +19,7 @@
           <q-item clickable to="/support">
             <q-item-section>고객지원</q-item-section>
           </q-item>
-          <q-item clickable to="/inform">
+          <q-item clickable to="/board/notice">
             <q-item-section>알림마당</q-item-section>
           </q-item>
           <q-item v-if="sessionUserSe === 'ADM'" clickable to="/admin">
@@ -60,7 +60,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .header {
   display: flex;
   justify-content: center;

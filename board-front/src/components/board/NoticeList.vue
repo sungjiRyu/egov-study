@@ -47,7 +47,7 @@
   align-items: center;
 }
 
-.board-table {  
+.board-table {
   border-collapse: collapse;
   margin-top: 20px;
 }
@@ -111,16 +111,15 @@ const maxPage = 10;                           // 최대(표시할) 페이지 수
 // get BoardList
 const boardList = async () => {
   const params = {
-    bbsId: "BBSMSTR_BBBBBBBBBBBB",
+    // bbsId: boardStore.bbsId,
     pageIndex: currentPage.value, // 현재 페이지로 설정
-    searchCnd: 0,
-    searchWrd: "",
+    searchCnd: boardStore.searchCnd,
+    searchWrd: boardStore.searchWrd
   }
 
   await boardStore.getBoardList(params);
 
   totalPage.value = boardStore.totalPage;
-  currentPage.value = boardStore.pageIndex;
 }
 
 onMounted(() => {

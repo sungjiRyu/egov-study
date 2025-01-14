@@ -26,5 +26,21 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE)
   })
 
+  // router guard (notice, gallery 제외한 url 입력시 404페이지로 리턴)
+    Router.beforeEach((to, from, next) => {
+    const allowedBoards = ['notice', 'gallery'] // 허용되는 boardId 목록
+
+    // '/board/:boardId' 라우트에서 boardId가 허용된 목록에 없으면 404 페이지로 리다이렉트
+    if (to.path.startsWith('/board/') && !allowedBoards.includes(to.params.boardId)) {
+      next('/ErrorNotFound')
+    } else {
+      // '/board/:boardId/:nttId' 라우트에서 추가적인 검사
+      if (to.path.includes('/board/') && to.params.nttId && !to.params.boardId) {
+        next('/ErrorNotFound')
+      } else {
+        next()
+      }
+    }
+  })
   return Router
 })
