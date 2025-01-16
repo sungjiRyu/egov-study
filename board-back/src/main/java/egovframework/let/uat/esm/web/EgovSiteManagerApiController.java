@@ -13,9 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.ResponseCode;
+import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.service.ResultVO;
+import egovframework.com.jwt.EgovJwtTokenUtil;
 import egovframework.let.uat.esm.service.EgovSiteManagerService;
+import egovframework.let.utl.fcc.service.EgovStringUtil;
 import egovframework.let.utl.sim.service.EgovFileScrty;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.Explode;
@@ -27,7 +32,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
+import egovframework.com.cmm.LoginVO;
 /**
  * 사이트관리자의 로그인 비밀번호를 변경 처리하는 컨트롤러 클래스
  * 
@@ -56,8 +61,15 @@ public class EgovSiteManagerApiController {
 	/** EgovSiteManagerService */
 	private final EgovSiteManagerService siteManagerService;
 
+	private final EgovJwtTokenUtil jwtTokenUtil;
+
+	public static final String SECRET_KEY = EgovProperties.getProperty("Globals.jwt.secret");
+
+	public static final String HEADER_STRING = "Authorization";
+
 	/**
 	 * 리액트에서 사이트관리자에 접근하는 토큰값 위변조 방지용으로 서버에서 비교한다.
+	 * 
 	 * 
 	 * @param map데이터: String old_password, new_password
 	 * @param request - 토큰값으로 인증된 사용자를 확인하기 위한 HttpServletRequest
@@ -76,6 +88,44 @@ public class EgovSiteManagerApiController {
 		resultVO.setResultMessage(ResponseCode.SUCCESS.getMessage());
 		return resultVO;
 	}
+
+	/**
+	 * 엑세스토큰 만료시 리프레시 토큰 검증 후 엑세스토큰 재발급
+	 * @param param
+	 * @param request
+	 * @param user
+	 * @return
+	 * @throws Exception
+	 */
+	@PostMapping(value = "/refreshTokenAuth")
+	public HashMap<String, Object> refreshTokenAuthentication(@RequestBody LoginVO loginVO, HttpServletRequest request) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		ResultVO resultVO = new ResultVO();
+		// 토큰 가져옴
+		String jwtToken = EgovStringUtil.isNullToString(request.getHeader(HEADER_STRING));
+		Claims claims = Jwts.parser()
+							.setSigningKey(SECRET_KEY)
+							.parseClaimsJws(jwtToken)
+							.getBody();
+
+		// 디코딩된 값을 LoginVO에 세팅
+		loginVO.setId(claims.get("id", String.class)); // 토큰에서 사용자 ID 추출
+		loginVO.setName(claims.get("name", String.class)); // 토큰에서 이름 추출
+		loginVO.setUserSe(claims.get("userSe", String.class)); // 사용자 구분 (예: "ADM", "USR")
+		loginVO.setOrgnztId(claims.get("orgnztId", String.class)); // 조직 ID
+		loginVO.setUniqId(claims.get("uniqId", String.class)); // 고유 ID	
+		loginVO.setGroupNm(claims.get("groupNm", String.class)); // 그룹명
+
+		resultVO.setResultCode(ResponseCode.SUCCESS.getCode());
+		resultVO.setResultMessage(ResponseCode.SUCCESS.getMessage());
+		String newAccessToken = jwtTokenUtil.generateToken(loginVO);
+
+		resultMap.put("resultVO", resultVO);
+		resultMap.put("accessToken", newAccessToken);
+
+		return resultMap;
+	}
+
 
 	/**
 	 * 사이트관리자의 기존 비번과 비교하여 변경된 비밀번호를 저장한다.

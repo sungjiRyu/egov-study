@@ -116,7 +116,10 @@ public class EgovLoginApiController {
 			log.debug("===>>> loginResultVO.getPassword() = " + loginResultVO.getPassword());
 			log.debug("===>>> loginResultVO.getGroupNm() = " + loginResultVO.getGroupNm());// 로그인 결과에서 스프링시큐리티용 그룹명값 출력
 
+			// accessToken 발급
 			String jwtToken = jwtTokenUtil.generateToken(loginResultVO);
+			// refreshToken 발급
+			String refreshToken = jwtTokenUtil.doGenerateRefreshToken(loginResultVO);
 
 			String username = jwtTokenUtil.getUserSeFromToken(jwtToken);
 			log.debug("Dec jwtToken username = " + username);
@@ -129,6 +132,7 @@ public class EgovLoginApiController {
 
 			resultMap.put("resultVO", loginResultVO);
 			resultMap.put("jToken", jwtToken);
+			resultMap.put("refreshToken", refreshToken);
 			resultMap.put("resultCode", 200);
 			resultMap.put("resultMessage", "성공 !!!");
 

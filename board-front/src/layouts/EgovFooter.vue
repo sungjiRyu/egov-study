@@ -63,7 +63,7 @@
 
 .footer > .inner > .info {
   float: left;
-  padding-top: 44px;
+  margin-top: 44px;
   color: #888;
   font-size: 16px;
   line-height: 26px;

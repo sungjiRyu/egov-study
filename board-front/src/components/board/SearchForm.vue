@@ -7,7 +7,6 @@
                     <q-btn icon='check' flat round @click='onSearch' />
                 </template>
             </q-input>
-            <q-btn v-if="userStore.isLogin" to="/login" label="등록" />
         </div>
     </div>
 </template>
@@ -28,7 +27,6 @@
 
 <script setup>
 import { ref } from 'vue'
-import { useUserStore } from '@/stores/user'
 import { useBoardStore } from '@/stores/board'
 
 const props = defineProps({
@@ -38,10 +36,7 @@ const props = defineProps({
   }
 })
 
-const userStore = useUserStore()
 const boardStore = useBoardStore()
-
-console.log('isLogin = ' + userStore.isLogin)
 
 const searchWord = ref()
 

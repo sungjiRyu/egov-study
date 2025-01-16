@@ -2,16 +2,18 @@ const PATH = {
   // AUTH
   LOGIN: "/auth/login-jwt",
   LOGOUT: "/auth/logout",
-
-  // BOARD
-  BOARD: "/board",
-  BOARD_DETAIL: (bbsId, nttId) => `/board/${bbsId}/${nttId}`,
+  JWT_AUTH: "/jwtAuthAPI",
+  REFRESHTOKEN_AUTH: "/refreshTokenAuth",
 
   // SIGNUP
   SIGNUP: "/etc/member_insert",
 
   // DUPLICATE CHECK
-  CHECK_DUPLICTE_ID: (id) => `/etc/member_checkid/${id}`
+  CHECK_DUPLICTE_ID: (id) => `/etc/member_checkid/${id}`,
+
+  // BOARD
+  BOARD: "/board",
+  BOARD_DETAIL: (bbsId, nttId) => `/board/${bbsId}/${nttId}`,
 };
 
 export { PATH }

@@ -1,6 +1,7 @@
 import { route } from 'quasar/wrappers'
 import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory } from 'vue-router'
 import routes from './routes'
+import { useUserStore } from '@/stores/user'
 
 /*
  * If not building with SSR mode, you can
@@ -10,6 +11,8 @@ import routes from './routes'
  * async/await or return a Promise which resolves
  * with the Router instance.
  */
+
+
 
 export default route(function (/* { store, ssrContext } */) {
   const createHistory = process.env.SERVER
@@ -27,20 +30,27 @@ export default route(function (/* { store, ssrContext } */) {
   })
 
   // router guard (notice, gallery 제외한 url 입력시 404페이지로 리턴)
-    Router.beforeEach((to, from, next) => {
+    Router.beforeEach(async(to, from, next) => {
     const allowedBoards = ['notice', 'gallery'] // 허용되는 boardId 목록
+
+    const userStore = useUserStore()
+    // 로그인 상태일 때 토큰 검증
+    if (userStore.isLogin) {      
+      await userStore.tokenAuth()
+    }
+
+    // 로그인 상태에서 /login 또는 /signup 페이지로 이동하려고 하면 /로 리다이렉트
+    if (userStore.isLogin && ['/login', '/signup'].includes(to.path)) {
+      next('/');
+    }
 
     // '/board/:boardId' 라우트에서 boardId가 허용된 목록에 없으면 404 페이지로 리다이렉트
     if (to.path.startsWith('/board/') && !allowedBoards.includes(to.params.boardId)) {
       next('/ErrorNotFound')
     } else {
-      // '/board/:boardId/:nttId' 라우트에서 추가적인 검사
-      if (to.path.includes('/board/') && to.params.nttId && !to.params.boardId) {
-        next('/ErrorNotFound')
-      } else {
-        next()
-      }
+      next()
     }
   })
+
   return Router
 })

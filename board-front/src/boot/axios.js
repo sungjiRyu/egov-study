@@ -3,7 +3,7 @@ import { Notify, Loading } from "quasar";
 
 // axios header setting
 axios.defaults.headers.common["Content-Type"] = "application/json";
-axios.defaults.headers.common["Authorization"] = localStorage.getItem("jToken");
+axios.defaults.headers.common["Authorization"] = localStorage.getItem("accessToken");
 
 // axios instance setting
 const api = axios.create({
@@ -72,6 +72,7 @@ api.interceptors.response.use(
         Notify.create(`오류가 발생하였습니다. [${error.message}]`);
         break;
     }
+    return Promise.reject(error);
   }
 );
 

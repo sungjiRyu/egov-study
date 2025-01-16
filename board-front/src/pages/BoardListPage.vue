@@ -11,6 +11,9 @@
     </div>
     <div class="board-page-body">
       <Search :boardType='boardType'/>
+      <div class="edit-btn-box">
+        <q-btn v-if="userStore.isLogin" :to="`/board/${boardId}/mode/create`" label="등록" />
+      </div>
       <BoardList :boardType='boardType' :boardId='boardId'/>
     </div>
     </div>
@@ -52,6 +55,11 @@
 .left-col {
   margin: 40px 100px 0px 380px
 }
+
+.edit-btn-box {
+  display: flex;
+  justify-content: right;
+}
 </style>
 
 <script setup>
@@ -59,10 +67,12 @@ import BoardList from "@/components/board/BoardList.vue";
 import Search from "@/components/board/SearchForm.vue";
 import SideNav from "@/components/board/SideNav.vue";
 import { useBoardStore } from "@/stores/board"
+import { useUserStore } from "@/stores/user";
 import { onMounted, ref, watch } from "vue";
 import { useRoute } from "vue-router";
 
 const boardStore = useBoardStore()
+const userStore = useUserStore();
 const route = useRoute()
 
 // boardId 가져오기

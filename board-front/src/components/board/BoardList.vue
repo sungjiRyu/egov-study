@@ -127,8 +127,6 @@ const maxPage = boardStore.maxPage     // 최대(표시할) 페이지 수
 
 // 게시글 상세 페이지 이동 함수
 const goToBoardDetail = (nttId) => {
-  console.log(nttId)
-  console.log()
   router.push(`/board/${props.boardId}/${nttId}`)
 }
 

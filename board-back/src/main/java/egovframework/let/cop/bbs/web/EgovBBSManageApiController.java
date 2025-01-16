@@ -183,7 +183,8 @@ public class EgovBBSManageApiController {
 		boardVO.setBbsId((String) commandMap.get("bbsId"));
 		boardVO.setSearchCnd((String) commandMap.get("searchCnd"));
 		boardVO.setSearchWrd((String) commandMap.get("searchWrd"));
-		boardVO.setPageIndex(Integer.valueOf((String) commandMap.get("pageIndex")));					
+		boardVO.setPageIndex(Integer.parseInt((String) commandMap.get("pageIndex")));
+
 		BoardMasterVO vo = new BoardMasterVO();
 		vo.setBbsId(boardVO.getBbsId());
 		vo.setUniqId(user.getUniqId());
@@ -193,7 +194,7 @@ public class EgovBBSManageApiController {
 		PaginationInfo paginationInfo = new PaginationInfo();
 		paginationInfo.setCurrentPageNo(boardVO.getPageIndex());
 		paginationInfo.setRecordCountPerPage(egovPropertyService.getInt("Globals.pageUnit"));
-		paginationInfo.setPageSize(egovPropertyService.getInt("Globals.pageSize"));		
+		paginationInfo.setPageSize(egovPropertyService.getInt("Globals.pageSize"));
 
 		boardVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		boardVO.setLastIndex(paginationInfo.getLastRecordIndex());
@@ -394,6 +395,7 @@ public class EgovBBSManageApiController {
 		user.setUniqId(uniqId); // 고정값(USRCNFRM_00000000000)에서 로그인 시 사용자 고유ID값으로 변경
 
 		beanValidator.validate(boardVO, bindingResult);
+		// hasErrors(): 바인딩 오류가 있는지 확인합니다. 오류가 있으면 true, 없으면 false를 반환합니다.
 		if (bindingResult.hasErrors()) {
 			resultVO.setResultCode(ResponseCode.INPUT_CHECK_ERROR.getCode());
 			resultVO.setResultMessage(ResponseCode.INPUT_CHECK_ERROR.getMessage());

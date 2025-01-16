@@ -28,6 +28,10 @@ const routes = [
         props: true,
       },
       {
+        path: "/board/:boardId/mode/:mode",
+        component: () => import ("@/pages/BoardEditPage.vue")
+      },
+      {
         path: "/mypage",
         component: () => import("@/pages/UserMypage.vue"),
       },

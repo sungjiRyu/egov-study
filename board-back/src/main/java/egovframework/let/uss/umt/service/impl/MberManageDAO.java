@@ -124,7 +124,9 @@ public class MberManageDAO extends EgovAbstractMapper {
 	 * @return int 사용가능여부(아이디 사용회수 )
 	 */
 	public int checkIdDplct(String checkId) {
-		return (Integer) selectOne("mberManageDAO.checkIdDplct_S", checkId);
+		int result = (Integer) selectOne("mberManageDAO.checkIdDplct_S", checkId);
+		// return (Integer) selectOne("mberManageDAO.checkIdDplct_S", checkId);
+		return result;
 	}
 
 }

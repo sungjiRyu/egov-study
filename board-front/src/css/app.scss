@@ -107,3 +107,16 @@ textarea {
   overflow: hidden;
   resize: none;
 }
+
+.btn {
+  border-radius: 5px;
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+  background: #169bd5;
+}
+
+input, textarea {
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
