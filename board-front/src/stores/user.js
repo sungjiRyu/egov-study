@@ -21,16 +21,12 @@ export const useUserStore = defineStore('user', {
 
         this.loginUserInfo = response.data.resultVO
         this.isLogin = true
-        localStorage.setItem('loginUserInfo', JSON.stringify(response.data.resultVO))
+        sessionStorage.setItem('loginUserInfo', JSON.stringify(response.data.resultVO))
         // accessToken 
         api.defaults.headers.common["Authorization"] = response.data.jToken
-        localStorage.setItem('accessToken', response.data.jToken)
+        sessionStorage.setItem('accessToken', response.data.jToken)
         // refreshToken
-        Cookies.set('refreshToken', response.data.refreshToken, {
-          expires: 7,               
-          secure: true,     
-          sameSite: 'Strict'
-        })    
+        localStorage.setItem('refreshToken', response.data.refreshToken)
         return statusCode
       })
     },
@@ -41,13 +37,10 @@ export const useUserStore = defineStore('user', {
         if (statusCode !== 200) return statusCode
 
         this.isLogin = false
-        localStorage.removeItem('loginUserInfo')
-        localStorage.removeItem('accessToken')
+        sessionStorage.removeItem('loginUserInfo')
+        sessionStorage.removeItem('accessToken')
         delete api.defaults.headers.common["Authorization"]
-        Cookies.remove('refreshToken', {
-          secure: true,
-          sameSite: 'Strict'
-        });
+        localStorage.removeItem('refreshToken')
         return statusCode
       })
     },
@@ -59,8 +52,8 @@ export const useUserStore = defineStore('user', {
         if (statusCode === 200) {
           this.isLogin = true
         }
-        if (statusCode === 403) { // accessToken 만료(accessToken 을 갱신한다)
-          api.defaults.headers.common["Authorization"] = Cookies.get('refreshToken')
+        if (statusCode === 401) { // accessToken 만료(accessToken 을 갱신한다)
+          api.defaults.headers.common["Authorization"] = localStorage.getItem('refreshToken')
           refreshTokenAuth()
         }
         if (statusCode === 409) { // refreshToken 만료 (재로그인)
@@ -76,6 +69,10 @@ export const useUserStore = defineStore('user', {
         }
         
       })
+      .catch((error) => {
+        if(error.response.status === 401) refreshTokenAuth()
+        else console.log('엑세스토큰 갱신 에러')
+      })
     },
 
     // refreshToken 검증(accessToken 갱신) 로직
@@ -88,7 +85,7 @@ export const useUserStore = defineStore('user', {
           api.defaults.headers.common["Authorization"] = response.data.accessToken
         }
         // refreshToken 만료(재로그인)
-        if (statusCode === 403) {
+        if (statusCode === 401) {
           this.isLogin = false
           delete axios.defaults.headers.common["Authorization"]
           localStorage.removeItem('accessToken')
@@ -104,11 +101,11 @@ export const useUserStore = defineStore('user', {
   },
    // persist 설정
    persist: {
-    enabled: true, // 로컬스토리지에 상태를 저장하도록 설정
+    enabled: true,
     strategies: [
       {
-        key: 'user', // 로컬스토리지에 저장될 키
-        storage: localStorage, // 로컬스토리지 사용
+        key: 'user',
+        storage: sessionStorage,
       }
     ]
   }

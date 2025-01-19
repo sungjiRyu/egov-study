@@ -450,7 +450,7 @@ public class EgovMberManageApiController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "등록 성공"),
 			@ApiResponse(responseCode = "403", description = "인가된 사용자가 아님"),
 			@ApiResponse(responseCode = "900", description = "입력값 무결성 오류") })
-	@PutMapping("/mypage/delete")
+	@PostMapping("/mypage/delete")
 	public ResultVO deleteMypage(@RequestBody MberManageVO mberManageVO, BindingResult bindingResult,
 			HttpServletRequest request, HttpServletResponse response) throws Exception {
 		Map<String, Object> resultMap = new HashMap<String, Object>();

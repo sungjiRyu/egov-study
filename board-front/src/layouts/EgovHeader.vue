@@ -32,10 +32,11 @@
         <template v-if="userStore.isLogin">
           <span>{{ loginUserInfo.id }}님이 로그인하셨습니다.</span>
           <q-btn @click="onSignOutButtonClickHandler" label="로그아웃" />
+          <q-btn to="/mypage" label="마이페이지" />
         </template>
         <template v-else>
           <q-btn to="/login" label="로그인" />
-          <q-btn to="/mypage" label="회원가입" />
+          <q-btn to="/signUp" label="회원가입" />
         </template>
       </div>
       <q-btn class="btnAllMenu" icon="menu" @click="toggleMenu" />

@@ -43,6 +43,7 @@
   background: #fff;
   width: 100%;
   border-top: 1px solid #27262642;
+  flex: 1
 }
 
 .footer > .inner {
@@ -51,7 +52,6 @@
   margin-top:30px;
   align-items: center;
   width: 1400px;
-  padding: 0 20px;
   gap: 20px;
   height: 100%;
 }

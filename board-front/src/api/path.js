@@ -8,6 +8,9 @@ const PATH = {
   // SIGNUP
   SIGNUP: "/etc/member_insert",
 
+  // DELETE USER
+  DELETE_USER: "mypage/delete",
+
   // DUPLICATE CHECK
   CHECK_DUPLICTE_ID: (id) => `/etc/member_checkid/${id}`,
 
