@@ -2,7 +2,7 @@
   <div class="signUp-container">
     <div class="signup-box">
       <div class="title-box">
-        <div class="title">회원생성</div>
+        <!-- <div class="title">회원생성</div> -->
       </div>
       <form class="signUp-form" @submit.prevent="onSignUpButtonClickHandler">
         <dl>
@@ -34,6 +34,39 @@
               type="text"
               v-model="userNm"
               placeholder="이름"
+              required
+            />
+          </dd>
+        </dl>
+        <dl>
+          <dt><span>이메일 <span class="required">*</span></span></dt>
+          <dd>
+            <input
+              type="email"
+              v-model="email"
+              placeholder="이메일"
+              required
+            />
+          </dd>
+        </dl>
+          <dl>
+          <dt><span>비밀번호 찾기 힌트<span class="required">*</span></span></dt>
+          <dd>
+            <select v-model="passwordHint" required>
+              <option disabled value="">힌트를 선택해주세요</option>
+              <option value="1">애완동물의 이름은 무엇인가요?</option>
+              <option value="2">어머니의 본명은 무엇인가요?</option>
+              <option value="3">초등학교 이름은 무엇인가요?</option>
+            </select>
+          </dd>
+        </dl>
+        <dl>
+          <dt><span>비밀번호 찾기 정답<span class="required">*</span></span></dt>
+          <dd>
+            <input
+              type="text"
+              v-model="passwordCnsr"
+              placeholder="정답"
               required
             />
           </dd>
@@ -160,6 +193,10 @@ const router = useRouter()
 const userId = ref('')
 const userPw = ref('')
 const userNm = ref('')
+const email = ref('')
+const passwordHint = ref('')
+const passwordCnsr = ref('')
+
 let isDuplicated = false
 
 // event handler: 회원가입 버튼 클릭 이벤트 처리(회원가입)
@@ -180,6 +217,9 @@ const onSignUpButtonClickHandler = async () => {
       mberId: userId.value,
       password: userPw.value,
       mberNm: userNm.value,
+      mberEmailAdres: email.value,
+      passwordHint: passwordHint.value,
+      passwordCnsr: passwordCnsr.value,
     };
 
     // signup request

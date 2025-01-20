@@ -35,21 +35,21 @@ export default route(function (/* { store, ssrContext } */) {
 
     const userStore = useUserStore()
     // 로그인 상태일 때 토큰 검증
-    if (userStore.isLogin) {      
+    if (userStore.isLogin) {
       await userStore.tokenAuth()
     }
 
     // 로그인 상태에서 /login 또는 /signup 페이지로 이동하려고 하면 /로 리다이렉트
     if (userStore.isLogin && ['/login', '/signup'].includes(to.path)) {
-      next('/');
+      return next('/');
     }
 
     // '/board/:boardId' 라우트에서 boardId가 허용된 목록에 없으면 404 페이지로 리다이렉트
     if (to.path.startsWith('/board/') && !allowedBoards.includes(to.params.boardId)) {
-      next('/ErrorNotFound')
-    } else {
-      next()
+      return next('/ErrorNotFound')
     }
+
+    next()
   })
 
   return Router

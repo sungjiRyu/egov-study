@@ -4,6 +4,8 @@ const PATH = {
   LOGOUT: "/auth/logout",
   JWT_AUTH: "/jwtAuthAPI",
   REFRESHTOKEN_AUTH: "/refreshTokenAuth",
+  FIND_ID: "/find/id",
+  FIND_PWD: "/find/pwd",
 
   // SIGNUP
   SIGNUP: "/etc/member_insert",

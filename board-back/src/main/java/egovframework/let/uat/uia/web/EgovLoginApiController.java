@@ -1,11 +1,14 @@
 package egovframework.let.uat.uia.web;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +22,7 @@ import egovframework.com.cmm.ResponseCode;
 import egovframework.com.cmm.service.ResultVO;
 import egovframework.com.jwt.EgovJwtTokenUtil;
 import egovframework.let.uat.uia.service.EgovLoginService;
+import egovframework.let.uat.uia.service.impl.LoginDAO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -167,17 +171,23 @@ public class EgovLoginApiController {
 		return resultVO;
 	}
 
+	// 아이디 찾기
+	@PostMapping(value = "/find/id")
+	public ResponseEntity<LoginVO> findId(@RequestBody LoginVO vo) throws Exception {
+		LoginVO loginVO = loginService.searchId(vo);
+
+		if (loginVO == null || loginVO.getId() == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(loginVO);
+
+		return ResponseEntity.status(HttpStatus.OK).body(loginVO);
+	}
+
 	// 비밀번호 찾기
-	public HashMap<String, Object> findPwd(@RequestBody LoginVO vo) throws Exception {
-		HashMap<String, Object> resultMap = new HashMap<String, Object>();
-		ResultVO resultVO = new ResultVO();
+	@PostMapping(value = "/find/pwd")
+	public ResponseEntity<LoginVO> findPwd(@RequestBody LoginVO vo) throws Exception {
+		LoginVO loginVO  = loginService.searchPassword(vo);
 
-		boolean findPwd  = loginService.searchPassword(vo);
+		if (loginVO == null || loginVO.getPassword() == null) return ResponseEntity.status(HttpStatus.NOT_FOUND).body(loginVO);
 
-		
-		
-
-
-		return resultMap;
+		return ResponseEntity.status(HttpStatus.OK).body(loginVO);
 	}
 }

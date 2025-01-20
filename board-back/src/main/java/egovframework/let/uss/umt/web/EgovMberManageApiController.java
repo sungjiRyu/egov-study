@@ -614,6 +614,4 @@ public class EgovMberManageApiController {
 		}
 		return resultVO;
 	}
-
-	// 일반사용자 비밀번호 찾기(selectPassword)
 }

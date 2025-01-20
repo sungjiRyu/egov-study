@@ -36,8 +36,8 @@ const routes = [
         component: () => import("@/pages/UserMypage.vue"),
       },
       {
-        path:"/find/:type",
-        component: () => import("@/pages/FindUserInfo.vue"),
+        path: "/find/:type",
+        component: () => import("@/pages/FindUserInfoPage.vue"),
       },
     ],
   },

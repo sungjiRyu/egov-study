@@ -50,8 +50,26 @@
       <div class="btn-box">
         <RouterLink class="boardList-btn btn" :to="`/board/${boardId}`">목록</RouterLink>
       </div>
+      <div v-if="userStore && userStore.isLogin" class="comment-section">
+        <div class="comment-list">
+          <p>댓글</p>
+          <ul>
+            <li v-for="(comment, index) in comments" :key="index">
+              <strong>{{ comment.author }}</strong>: {{ comment.content }}
+            </li>
+          </ul>
+        </div>
+        <div class="comment-input">
+          <textarea
+            v-model="newComment"
+            placeholder="댓글을 입력하세요..."
+            rows="3"
+          ></textarea>
+          <button @click="submitComment" class="btn">댓글 달기</button>
+        </div>
     </div>
-  </div>
+    </div>
+</div>
 </template>
 
 
@@ -61,15 +79,19 @@ import sideNav from '@/components/board/SideNav.vue';
 import { useRoute } from 'vue-router';
 import { api } from '@/boot/axios';
 import { PATH } from '@/api/path';
+import { useUserStore } from '@/stores/user';
 
 // router
 const router = useRoute();
 // DOMAIN_URL
 const DOMAIN_URL = process.env.DOMAIN_URL
 
+// userStore
+const userStore = useUserStore()
+
 // boardId 및 nttId
-const boardId = router.params.boardId;
-let boardType = boardId === 'notice' ? 'BBSMSTR_AAAAAAAAAAAA' : (boardId === 'gallery' ? 'BBSMSTR_BBBBBBBBBBBB' : '');
+const boardId = router.params.boardId
+let boardType = boardId === 'notice' ? 'BBSMSTR_AAAAAAAAAAAA' : (boardId === 'gallery' ? 'BBSMSTR_BBBBBBBBBBBB' : '')
 const nttId = router.params.nttId;
 
 // 게시물 데이터 상태 관리
@@ -83,7 +105,7 @@ const boardData = ref({
 });
 
 // 첨부파일 목록
-const resultFiles = ref([]);
+const resultFiles = ref([])
 
 // 파일 다운로드 함수
 const onClickDownFile = (atchFileId, fileSn) => {
@@ -93,7 +115,7 @@ const onClickDownFile = (atchFileId, fileSn) => {
 // 파일 다운로드 링크
 const getBoardDetail = async () => {
   try {
-    const response = await api.get(PATH.BOARD_DETAIL(boardType, nttId));
+    const response = await api.get(PATH.BOARD_DETAIL(boardType, nttId))
     if (response.data.resultCode === 200) {
       const { boardVO } = response.data.result
       resultFiles.value = response.data.result.resultFiles
@@ -106,10 +128,10 @@ const getBoardDetail = async () => {
         nttCn: boardVO.nttCn,
       };
     } else {
-      console.error('Error Get board details:', response.data.resultMessage);
+      console.error('Error Get board details:', response.data.resultMessage)
     }
   } catch (error) {
-    console.error('Error Get board details:', error);
+    console.error('Error Get board details:', error)
   }
 };
 
@@ -123,7 +145,7 @@ onMounted(() => {
 /* 스타일 설정 */
 .container {
   display: flex;
-  flex-direction: row;
+  /* flex-direction: column; */
   padding-top: 50px;
   padding-bottom: 50px;
 }

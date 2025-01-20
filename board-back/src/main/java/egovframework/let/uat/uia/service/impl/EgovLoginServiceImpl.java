@@ -1,5 +1,7 @@
 package egovframework.let.uat.uia.service.impl;
 
+import java.util.Optional;
+
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -93,14 +95,12 @@ public class EgovLoginServiceImpl extends EgovAbstractServiceImpl implements Ego
 	 * @exception Exception
 	 */
 	@Override
-	public boolean searchPassword(LoginVO vo) throws Exception {
-
-		boolean result = true;
+	public LoginVO searchPassword(LoginVO vo) throws Exception {
 
 		// 1. 아이디, 이름, 이메일주소, 비밀번호 힌트, 비밀번호 정답이 DB와 일치하는 사용자 Password를 조회한다.
 		LoginVO loginVO = loginDAO.searchPassword(vo);
 		if (loginVO == null || loginVO.getPassword() == null || loginVO.getPassword().equals("")) {
-			return false;
+			return loginVO;
 		}
 
 		// 2. 임시 비밀번호를 생성한다.(영+영+숫+영+영+숫=6자리)
@@ -122,7 +122,8 @@ public class EgovLoginServiceImpl extends EgovAbstractServiceImpl implements Ego
 		pwVO.setPassword(enpassword);
 		pwVO.setUserSe(vo.getUserSe());
 		loginDAO.updatePassword(pwVO);
+		loginVO.setPassword(newpassword);
 
-		return result;
+		return loginVO;
 	}
 }

@@ -56,6 +56,8 @@ public class SecurityConfig {
             "/swagger-resources/**",
             "/swagger-ui.html",
             "/swagger-ui/**",
+            "/find/id",
+            "/find/pwd"
             
     };
     private static final String[] ORIGINS_WHITELIST = {

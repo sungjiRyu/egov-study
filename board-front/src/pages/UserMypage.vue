@@ -39,6 +39,39 @@
               />
             </dd>
           </dl>
+          <dl>
+          <dt><span>이메일 <span class="required">*</span></span></dt>
+          <dd>
+            <input
+              type="email"
+              v-model="email"
+              placeholder="이메일"
+              required
+            />
+          </dd>
+        </dl>
+          <dl>
+          <dt><span>비밀번호 찾기 힌트<span class="required">*</span></span></dt>
+          <dd>
+            <select v-model="passwordHint" required>
+              <option disabled value="">힌트를 선택해주세요</option>
+              <option value="1">애완동물의 이름은 무엇인가요?</option>
+              <option value="2">어머니의 본명은 무엇인가요?</option>
+              <option value="3">초등학교 이름은 무엇인가요?</option>
+            </select>
+          </dd>
+        </dl>
+        <dl>
+          <dt><span>비밀번호 찾기 정답<span class="required">*</span></span></dt>
+          <dd>
+            <input
+              type="text"
+              v-model="passwordCnsr"
+              placeholder="정답"
+              required
+            />
+          </dd>
+        </dl>
           <div class="btn-box">
             <button type="button" class="save-btn" @click="onUpdateUserInfo">수정</button>
             <button type="button"  class="delete-account-btn" @click="onDeleteUser">탈퇴</button>
@@ -63,6 +96,9 @@ const router = useRouter()
 const mberId = ref(userStore.loginUserInfo.id)
 const mberNm = ref(userStore.loginUserInfo.name)
 const password = ref('')
+const email = ref(userStore.loginUserInfo.email)
+const passwordCnsr = ref(userStore.loginUserInfo.passwordCnsr)
+const passwordHint = ref(userStore.loginUserInfo.passwordHint)
 const uniqId = userStore.loginUserInfo.uniqId
 
 // 회원정보 수정
@@ -86,6 +122,9 @@ const onUpdateUserInfo = () => {
     mberId: mberId.value,
     mberNm: mberNm.value,
     password: password.value,
+    mberEmailAdres: email.value,
+    passwordCnsr: passwordCnsr.value,
+    passwordHint: passwordHint.value,
     uniqId: uniqId
   }
     api.post(PATH.UPDATE_USERINFO, requestBody).then((response) => {
@@ -196,7 +235,7 @@ const onDeleteUser = () => {
     font-size: 16px;
     background: #fff;
   }
-  
+
   .btn-box {
     display: flex;
     justify-content: space-between;
@@ -239,15 +278,6 @@ const onDeleteUser = () => {
     font-size: 30px;
     font-weight: 700;
   }
-  
-  /* .signUp-form > dl > dd > input:invalid {
-    border-color: red;
-    background-color: #ffe6e6;
-  } */
-  
-  /* .signUp-form > dl > dd > input:focus:invalid {
-    outline-color: red;
-  } */
   
   .required {
     color: red;

@@ -1,5 +1,7 @@
 package egovframework.let.uat.uia.service;
 
+import java.util.Optional;
+
 import egovframework.com.cmm.LoginVO;
 
 /**
@@ -46,6 +48,6 @@ public interface EgovLoginService {
 	 * @param vo    LoginVO
 	 * @exception Exception Exception
 	 */
-	public boolean searchPassword(LoginVO vo) throws Exception;
+	public LoginVO searchPassword(LoginVO vo) throws Exception;
 
 }

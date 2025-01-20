@@ -38,8 +38,9 @@
           </div>
           </div>
           <div class="login-form-bottom">
-            <q-btn label="id 찾기" to="/find/id" style="width: 95px;" />
-            <q-btn label="pwd 찾기" to="/find/pwd" style="width: 95px;" />
+            <RouterLink class="link" to="/find/id">id 찾기</RouterLink>
+            <div>|</div>
+            <RouterLink class="link" to="/find/pwd">pwd 찾기</RouterLink>
           </div>
         </q-form>
       </q-card>
@@ -135,6 +136,7 @@
   display: flex;
   justify-content: space-between;
   gap: 20px;
+  font-size: 14px;
 }
 
 .form-header {
@@ -182,6 +184,10 @@
   color: #666;
   font-size: 16px;
   line-height: 26px;
+}
+
+.link:hover{
+  text-decoration: underline;
 }
 </style>
 

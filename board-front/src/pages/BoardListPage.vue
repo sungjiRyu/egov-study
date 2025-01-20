@@ -63,16 +63,16 @@
 </style>
 
 <script setup>
-import BoardList from "@/components/board/BoardList.vue";
-import Search from "@/components/board/SearchForm.vue";
-import SideNav from "@/components/board/SideNav.vue";
+import BoardList from "@/components/board/BoardList.vue"
+import Search from "@/components/board/SearchForm.vue"
+import SideNav from "@/components/board/SideNav.vue"
 import { useBoardStore } from "@/stores/board"
-import { useUserStore } from "@/stores/user";
-import { onMounted, ref, watch } from "vue";
-import { useRoute } from "vue-router";
+import { useUserStore } from "@/stores/user"
+import { onMounted, ref, watch } from "vue"
+import { useRoute } from "vue-router"
 
 const boardStore = useBoardStore()
-const userStore = useUserStore();
+const userStore = useUserStore()
 const route = useRoute()
 
 // boardId 가져오기
@@ -80,7 +80,7 @@ const boardId = ref(route.params.boardId)
 // boardId에 따라 boardType을 설정
 let boardType = ref('')
 const updateBoardType = () => {
-  boardType.value = boardId.value === 'notice' ? 'BBSMSTR_AAAAAAAAAAAA' : (boardId.value === 'gallery' ? 'BBSMSTR_BBBBBBBBBBBB' : '');
+  boardType.value = boardId.value === 'notice' ? 'BBSMSTR_AAAAAAAAAAAA' : (boardId.value === 'gallery' ? 'BBSMSTR_BBBBBBBBBBBB' : '')
 }
 
 // get BoardList
