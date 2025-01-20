@@ -15,7 +15,7 @@ const routes = [
       },
       {
         path: "/signUp",
-        component: () => import("@/pages/SignupPage.vue"),
+        component: () => import("@/pages/SignUpPage.vue"),
       },
       {
         path: "/board/:boardId",
@@ -29,11 +29,15 @@ const routes = [
       },
       {
         path: "/board/:boardId/mode/:mode",
-        component: () => import ("@/pages/BoardEditPage.vue")
+        component: () => import ("@/pages/BoardEditPage.vue"),
       },
       {
         path: "/mypage",
         component: () => import("@/pages/UserMypage.vue"),
+      },
+      {
+        path:"/find/:type",
+        component: () => import("@/pages/FindUserInfo.vue"),
       },
     ],
   },

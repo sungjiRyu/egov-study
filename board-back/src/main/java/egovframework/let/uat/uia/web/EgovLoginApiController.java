@@ -166,4 +166,18 @@ public class EgovLoginApiController {
 
 		return resultVO;
 	}
+
+	// 비밀번호 찾기
+	public HashMap<String, Object> findPwd(@RequestBody LoginVO vo) throws Exception {
+		HashMap<String, Object> resultMap = new HashMap<String, Object>();
+		ResultVO resultVO = new ResultVO();
+
+		boolean findPwd  = loginService.searchPassword(vo);
+
+		
+		
+
+
+		return resultMap;
+	}
 }

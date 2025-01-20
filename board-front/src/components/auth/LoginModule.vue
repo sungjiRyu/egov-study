@@ -11,29 +11,35 @@
       </div>
       <q-card class="login-card">
         <q-form class="login-form" @submit.prevent="onSignInButtonClickHandler">
-          <div class="form-header">
-            <div class="input-box">
-              <input
-                type="text"
-                id="id"
-                v-model="username"
-                placeholder="아이디"
-                required
+          <div class="login-form-top">
+            <div class="form-header">
+              <div class="input-box">
+                <input
+                  type="text"
+                  id="id"
+                  v-model="username"
+                  placeholder="아이디"
+                  required
+                />
+                <input
+                  type="password"
+                  id="password"
+                  v-model="password"
+                  placeholder="비밀번호"
+                  required
+                />
+              </div>
+              <q-btn
+                type="submit"
+                color="primary"
+                label="login"
+                class="login-button"
               />
-              <input
-                type="password"
-                id="password"
-                v-model="password"
-                placeholder="비밀번호"
-                required
-              />
-            </div>
-            <q-btn
-              type="submit"
-              color="primary"
-              label="login"
-              class="login-button"
-            />
+          </div>
+          </div>
+          <div class="login-form-bottom">
+            <q-btn label="id 찾기" to="/find/id" style="width: 95px;" />
+            <q-btn label="pwd 찾기" to="/find/pwd" style="width: 95px;" />
           </div>
         </q-form>
       </q-card>
@@ -115,8 +121,20 @@
 .login-form {
   display: flex;
   justify-content: center;
-  flex-direction: row;
+  align-items: center;
+  flex-direction: column;
   gap: 10px;
+}
+
+.login-form-top {
+  display: flex;
+}
+
+.login-form-bottom {
+  margin-right: 85px;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
 }
 
 .form-header {
@@ -168,16 +186,15 @@
 </style>
 
 <script setup>
-import { Notify } from 'quasar';
-import { useUserStore } from '@/stores/user';
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { useUserStore } from '@/stores/user'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
-const userStore = useUserStore();
-const router = useRouter();
+const userStore = useUserStore()
+const router = useRouter()
 
-const username = ref("");
-const password = ref("");
+const username = ref("")
+const password = ref("")
 
 // event handler: 로그인 버튼 클릭 이벤트
 const onSignInButtonClickHandler = () => {
@@ -186,13 +203,6 @@ const onSignInButtonClickHandler = () => {
     id: username.value,
     password: password.value,
   }
-  userStore.signIn(requestBody).then((response) => {
-    if (response === 300) {
-      Notify.create({ type: 'negative', message: '로그인 실패', position: 'top' })
-      return
-    }
-    Notify.create({ type: 'positive', message: '로그인 성공', position: 'top' })
-    router.push('/')
-    })
+  userStore.signIn(requestBody, router)
   }
 </script>

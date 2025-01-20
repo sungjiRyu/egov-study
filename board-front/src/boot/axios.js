@@ -3,7 +3,7 @@ import { Notify, Loading } from "quasar";
 
 // axios header setting
 axios.defaults.headers.common["Content-Type"] = "application/json";
-axios.defaults.headers.common["Authorization"] = localStorage.getItem("accessToken");
+axios.defaults.headers.common["Authorization"] = sessionStorage.getItem("accessToken");
 
 // axios instance setting
 const api = axios.create({
@@ -46,9 +46,11 @@ api.interceptors.response.use(
     // timeout error
     const errorStatus =
       error.code == "ECONNABORTED" ? 408 : error.response.status;
-    switch (errorStatus) {
+  switch (errorStatus) {
       case "400":
         Notify.create(error.response.data);
+        break;
+      case 401: // 토큰만료
         break;
       case "403":
         Notify.create("인가된 사용자 가 아닙니다.");

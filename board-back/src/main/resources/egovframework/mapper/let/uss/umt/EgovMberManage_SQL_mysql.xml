@@ -173,6 +173,9 @@
         UPDATE LETTNEMPLYRINFO 
          SET EMPLYR_ID          = #{mberId},
              USER_NM          = #{mberNm},
+             <if test="password != null and password != ''">
+             PASSWORD         = #{password},
+             </if>
              PASSWORD_HINT    = #{passwordHint},
              PASSWORD_CNSR    = #{passwordCnsr},
              IHIDNUM          = #{ihidnum},

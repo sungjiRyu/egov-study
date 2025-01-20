@@ -5,13 +5,13 @@
         <div class="divider"></div>
         </div>
       <div class="signup-box">
-        <form class="signUp-form" @submit.prevent="onModify">
+        <form class="signUp-form">
           <dl>
             <dt><span>회원ID <span class="required">*</span></span></dt>
             <dd>
               <input
                 type="text"
-                v-model="userId"
+                v-model="mberId"
                 placeholder="아이디"
                 required
               />
@@ -22,7 +22,7 @@
             <dd>
               <input
                 type="password"
-                v-model="userPw"
+                v-model="password"
                 placeholder="비밀번호"
                 required
               />
@@ -33,15 +33,15 @@
             <dd>
               <input
                 type="text"
-                v-model="userNm"
+                v-model="mberNm"
                 placeholder="이름"
                 required
               />
             </dd>
           </dl>
           <div class="btn-box">
-            <button type="submit" class="save-btn">수정</button>
-            <button type="button"  class="delete-account-btn">탈퇴</button>
+            <button type="button" class="save-btn" @click="onUpdateUserInfo">수정</button>
+            <button type="button"  class="delete-account-btn" @click="onDeleteUser">탈퇴</button>
           </div>
         </form>
       </div>
@@ -50,11 +50,91 @@
 
 <script setup>
 import { useUserStore } from '@/stores/user'
+import { ref } from 'vue'
+import { PATH } from '@/api/path'
+import { api } from '@/boot/axios'
+import { Notify, Dialog } from 'quasar'
+import { useQuasar } from 'quasar'
+import { useRouter } from 'vue-router'
 
 const userStore = useUserStore()
+const router = useRouter()
 
-const userId = userStore.loginUserInfo.id
-const userNm = userStore.loginUserInfo.name
+const mberId = ref(userStore.loginUserInfo.id)
+const mberNm = ref(userStore.loginUserInfo.name)
+const password = ref('')
+const uniqId = userStore.loginUserInfo.uniqId
+
+// 회원정보 수정
+const onUpdateUserInfo = () => {
+  Dialog.create({
+    title: '회원 정보 수정',
+    message: '회원정보 수정시 다시 로그인해야 합니다.',
+    cancel: true,
+    persistent: true,
+    ok: {
+      push: true,
+      label: '수정'
+    },
+    cancel: {
+      push: true,
+      color: 'grey',
+      label: '취소'
+    }
+  }).onOk(() =>{
+    const requestBody = {
+    mberId: mberId.value,
+    mberNm: mberNm.value,
+    password: password.value,
+    uniqId: uniqId
+  }
+    api.post(PATH.UPDATE_USERINFO, requestBody).then((response) => {
+      if (response.data.resultCode === 200) {
+        Notify.create({ type: 'positive', message: '회원정보 수정 성공', position: 'top' })
+        userStore.signOut(router)
+      }
+    })
+    .catch((error) => {
+      console.log('회원정보 수정 오류 : ' + error)
+    })
+  })
+}
+
+// 회원 탈퇴
+const onDeleteUser = () => {
+  Dialog.create({
+    title: '회원 탈퇴',
+    message: '정말 탈퇴하시겠습니까?',
+    cancel: true,
+    persistent: true,
+    ok: {
+      push: true,
+      color: 'negative',
+      label: '탈퇴'
+    },
+    cancel: {
+      push: true,
+      color: 'grey',
+      label: '취소'
+    }
+  }).onOk(() => {
+    // 확인을 선택시
+    const requestBody = {
+      uniqId: uniqId,
+      password: ''
+    }
+    api.post(PATH.DELETE_USER, requestBody ).then((response) => {
+      if (response.data.resultCode === 200) {
+        Notify.create({ type: 'positive', message: '회원탈퇴가 완료되었습니다.', position: 'top' })
+        userStore.signOut(router)  // 로그아웃 처리
+      }
+    })
+    .catch((error) => {
+      console.log('회원탈퇴 오류 : ' + error)
+      Notify.create({ type: 'negative', message: '회원탈퇴 중 오류가 발생했습니다.', position: 'top' })
+    })
+  })
+}
 
 </script>
 

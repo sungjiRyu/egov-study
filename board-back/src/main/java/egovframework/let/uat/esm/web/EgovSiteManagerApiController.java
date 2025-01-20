@@ -98,7 +98,7 @@ public class EgovSiteManagerApiController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/refreshTokenAuth")
-	public HashMap<String, Object> refreshTokenAuthentication(@RequestBody LoginVO loginVO, HttpServletRequest request) throws Exception {
+	public HashMap<String, Object> refreshTokenAuthentication(LoginVO loginVO, HttpServletRequest request) throws Exception {
 		HashMap<String, Object> resultMap = new HashMap<String, Object>();
 		ResultVO resultVO = new ResultVO();
 		// 토큰 가져옴

@@ -22,16 +22,13 @@
           <q-item clickable to="/board/notice">
             <q-item-section>알림마당</q-item-section>
           </q-item>
-          <q-item v-if="sessionUserSe === 'ADM'" clickable to="/admin">
-            <q-item-section>사이트관리</q-item-section>
-          </q-item>
         </q-list>
       </div>
 
       <div class="user_info">
         <template v-if="userStore.isLogin">
           <span>{{ loginUserInfo.id }}님이 로그인하셨습니다.</span>
-          <q-btn @click="onSignOutButtonClickHandler" label="로그아웃" />
+          <q-btn @click="onSignout" label="로그아웃" />
           <q-btn to="/mypage" label="마이페이지" />
         </template>
         <template v-else>
@@ -120,7 +117,6 @@
 
 <script setup>
 import { computed, ref} from 'vue'
-import { Notify } from 'quasar'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
 
@@ -131,17 +127,9 @@ const router = useRouter()
 const loginUserInfo = computed(() => userStore.loginUserInfo)
 
 // event handler: 로그아웃 버튼 클릭 이벤트 처리
-const onSignOutButtonClickHandler = () => {
-  userStore.signOut().then((response) => {
-    if (!response) {
-      Notify.create({ message: '네트워크 오류', position: 'top' })
-      return
-    }
-
-    Notify.create({ message: '로그아웃 성공', position: 'top' })
-    router.push('/')
-    })
-  }
+const onSignout = () => {
+  userStore.signOut(router)
+}
 
 const toggleMenu = () => {
   menuDrawer.value = !menuDrawer.value;

@@ -8,6 +8,8 @@ const PATH = {
   // SIGNUP
   SIGNUP: "/etc/member_insert",
 
+  // USERINFO MODIFY
+  UPDATE_USERINFO: "mypage/update",
   // DELETE USER
   DELETE_USER: "mypage/delete",
 

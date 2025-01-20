@@ -413,7 +413,7 @@ public class EgovMberManageApiController {
 	@ApiResponses(value = { @ApiResponse(responseCode = "200", description = "등록 성공"),
 			@ApiResponse(responseCode = "403", description = "인가된 사용자가 아님"),
 			@ApiResponse(responseCode = "900", description = "입력값 무결성 오류") })
-	@PutMapping("/mypage/update")
+	@PostMapping("/mypage/update")
 	public ResultVO updateMypage(@RequestBody MberManageVO mberManageVO, BindingResult bindingResult) throws Exception {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		ResultVO resultVO = new ResultVO();
@@ -463,7 +463,7 @@ public class EgovMberManageApiController {
 			resultVO.setResultMessage(ResponseCode.SAVE_ERROR.getMessage());
 		} else {
 			mberManageVO.setMberSttus("D");// 회원상태 삭제상태로
-			mberManageService.updateMber(mberManageVO);// 회원상태 탈퇴 처리
+			mberManageService.deleteMber(mberManageVO.getUniqId());// 회원상태 탈퇴 처리
 			new SecurityContextLogoutHandler().logout(request, response, null);// 로그인 토큰값 지우기
 			// Exception 없이 진행시 수정성공메시지
 			resultMap.put("resultMsg", "success.common.update");
@@ -614,4 +614,6 @@ public class EgovMberManageApiController {
 		}
 		return resultVO;
 	}
+
+	// 일반사용자 비밀번호 찾기(selectPassword)
 }
